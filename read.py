@@ -22,25 +22,29 @@ def readdata(filtersize):
     data_dict = {0: [], 1: []}
 
     for imagepath in glob.glob(path + "*"):
-        image = cv2.imread(imagepath, 0)
+        image = cv2.imread(imagepath)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         m, n = image.shape
         imagen = image.reshape((1, m * n))
         data_dict[0].append(imagen)
 
     for imagepath in glob.glob(path1 + "*"):
-        image = cv2.imread(imagepath, 0)
+        image = cv2.imread(imagepath)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         m, n = image.shape
         imagen = image.reshape((1, m * n))
         data_dict[0].append(imagen)
 
     for imagepath in glob.glob(path2 + "*"):
-        image = cv2.imread(imagepath, 0)
+        image = cv2.imread(imagepath)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         m, n = image.shape
         imagen = image.reshape((1, m * n))
         data_dict[1].append(imagen)
 
     for imagepath in glob.glob(path3 + "*"):
-        image = cv2.imread(imagepath, 0)
+        image = cv2.imread(imagepath)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         m, n = image.shape
         imagen = image.reshape((1, m * n))
         data_dict[1].append(imagen)
@@ -49,11 +53,10 @@ def readdata(filtersize):
 
 
 def data_split(data):
-
     images = data[0]
     fulldata = []
     fulllabels = []
-    for classvalue,im in images.items():
+    for classvalue, im in images.items():
         for i in range(len(im)):
             fulldata.append(im[i])
             fulllabels.append(classvalue)
@@ -72,7 +75,7 @@ def preprecessing_MFR(data):
             finalimage = imagesdata[im].reshape((size_m, size_n))
             denoised = scn.median_filter(finalimage, 3)
             mfrimage = denoised - finalimage
-            mfrimage = mfrimage.reshape((1, size_m * size_n))
+            mfrimage = mfrimage.reshape((size_m, size_n, 1))
             imagesdata[im] = mfrimage
 
     return [images, size_m, size_n]
